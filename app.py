@@ -45,7 +45,7 @@ def upload():
         blob.make_public()
         os.remove(local_path)  # Remove local copy
 
-        return redirect(url_for("index"))
+        return redirect("/")
 
     return "File upload failed", 500
 
