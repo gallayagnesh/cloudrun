@@ -37,7 +37,7 @@ def upload():
 
         # Upload file to Cloud Storage
         bucket = storage_client.bucket(BUCKET_NAME)
-        blob = bucket.blob(file.filename)
+        blob = bucket.blob(f"uploads/{file.filename}")
         print("blob",blob)
         blob.upload_from_filename(local_path)
 
