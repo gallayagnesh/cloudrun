@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from google.cloud import storage
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["UPLOAD_FOLDER"] = "/uploads/"
 BUCKET_NAME = "flask-images-bucket"  # Replace with your GCP bucket name
 
 # Ensure the upload folder exists
