@@ -45,7 +45,12 @@ def upload():
         blob.make_public()
         os.remove(local_path)  # Remove local copy
 
-        return redirect(url_for("index"))
+        return '''
+        <script>
+            alert("File uploaded successfully!");
+            window.location.href = "/";
+        </script>
+        '''
 
     return "File upload failed", 500
 
