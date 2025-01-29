@@ -15,8 +15,13 @@ storage_client = storage.Client()
 @app.route("/")
 def index():
     """Render the homepage with upload and list options."""
-    blobs = list(storage_client.list_blobs(BUCKET_NAME))
-    images = [{"filename": blob.name, "url": blob.public_url} for blob in blobs]
+    blobs = list(storage_client.list_blobs(BUCKET_NAME, prefix="uploads/"))
+    images = [
+        {"filename": blob.name, "url": blob.public_url}
+        for blob in blobs
+        if not blob.name.endswith("/")  # Exclude subdirectories
+    ]
+    
     return render_template("index.html", images=images)
 
 @app.route("/upload", methods=["POST"])
