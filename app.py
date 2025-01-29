@@ -16,7 +16,7 @@ storage_client = storage.Client()
 def index():
     """Render the homepage with upload and list options."""
     blobs = list(storage_client.list_blobs(BUCKET_NAME))
-    images = [blob.public_url for blob in blobs]
+    images = [{"filename": blob.name, "url": blob.public_url} for blob in blobs]
     return render_template("index.html", images=images)
 
 @app.route("/upload", methods=["POST"])
@@ -32,11 +32,13 @@ def upload():
     if file:
         # Save file locally
         local_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+        print("localpath"+local_path)
         file.save(local_path)
 
         # Upload file to Cloud Storage
         bucket = storage_client.bucket(BUCKET_NAME)
         blob = bucket.blob(file.filename)
+        print("blob"+blob)
         blob.upload_from_filename(local_path)
 
         # Make file publicly accessible
