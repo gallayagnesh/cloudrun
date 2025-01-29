@@ -3,11 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from google.cloud import storage
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "/uploads/"
 BUCKET_NAME = "flask-images-bucket"  # Replace with your GCP bucket name
-
-# Ensure the upload folder exists
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # Initialize GCP Storage Client
 storage_client = storage.Client()
@@ -31,7 +27,7 @@ def upload():
 
     if file:
         # Save file locally
-        local_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+        local_path = os.path.join("./uploads", file.filename)
         print("localpath",local_path)
         file.save(local_path)
 
@@ -45,7 +41,7 @@ def upload():
         blob.make_public()
         os.remove(local_path)  # Remove local copy
 
-        return redirect(url_for("index"))
+        return redirect("/")
 
     return "File upload failed", 500
 
